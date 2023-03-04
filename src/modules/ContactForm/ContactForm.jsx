@@ -1,20 +1,34 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact, getContacts } from 'redux/contacts/contactsSlice';
 import PropTypes from 'prop-types';
 import Button from 'shared/components/Button/Button';
 import Input from 'shared/components/Input/Input';
 import styles from './ContactForm.module.scss';
-function ContactForm({ onSubmit }) {
+function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const { contacts } = useSelector(getContacts);
+  const dispatch = useDispatch();
 
   const resetState = () => {
     setName('');
     setNumber('');
   };
 
+  const checkDuplicate = newName => {
+    return contacts.find(({ name }) => name === newName);
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
-    onSubmit(name, number);
+
+    if (checkDuplicate(name)) {
+      alert(`${name} is already in contact`);
+      return;
+    }
+
+    dispatch(addContact(name, number));
     resetState();
   };
 

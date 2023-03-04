@@ -8,7 +8,7 @@ import styles from './ContactForm.module.scss';
 function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const { contacts } = useSelector(getContacts);
+  const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
 
   const resetState = () => {

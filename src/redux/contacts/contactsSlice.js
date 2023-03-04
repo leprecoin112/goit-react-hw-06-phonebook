@@ -3,11 +3,11 @@ import { nanoid } from 'nanoid';
 
 const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: { contacts: [] },
+  initialState: { items: [] },
   reducers: {
     addContact: {
-      reducer({ contacts }, action) {
-        contacts.push(action.payload);
+      reducer({ items }, action) {
+        items.push(action.payload);
       },
       prepare(name, number) {
         return {
@@ -19,8 +19,10 @@ const contactsSlice = createSlice({
         };
       },
     },
-    deleteContact: ({ contacts }, action) =>
-      contacts.filter(({ id }) => id !== action.payload),
+    deleteContact({ items }, action) {
+      const index = items.findIndex(task => task.id === action.payload);
+      items.splice(index, 1);
+    },
   },
 });
 
@@ -28,4 +30,7 @@ export const { addContact, deleteContact } = contactsSlice.actions;
 
 export const contactsReducer = contactsSlice.reducer;
 
-export const getContacts = state => state.contacts;
+export const getContacts = state => {
+  console.log(state);
+  return state.contacts.items;
+};
